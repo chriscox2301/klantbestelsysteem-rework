@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { AddToCartForm } from "@/components/add-to-cart";
 import { ProductImage } from "@/components/product-image";
 import { ProductTile } from "@/components/product-tile";
-import { getAllProducts, getProductById } from "@/lib/data";
+import { getAllProducts, getBestSellingProducts, getProductById } from "@/lib/data";
 import { formatPrice, partNumber } from "@/lib/format";
 
 export function generateStaticParams() {
@@ -19,6 +19,14 @@ export async function generateMetadata({
   return { title: product?.name ?? "Product niet gevonden" };
 }
 
+/** Kolommen per aantal items, zodat het raster nooit een lege kolom heeft. */
+const relatedGrid: Record<number, string> = {
+  1: "max-w-sm",
+  2: "sm:grid-cols-2",
+  3: "sm:grid-cols-3",
+  4: "sm:grid-cols-2 lg:grid-cols-4",
+};
+
 const promises = [
   "Gratis verzending",
   "30 dagen bedenktijd en gratis retourneren",
@@ -32,7 +40,10 @@ export default async function ProductPage({
   const product = getProductById(Number(id));
   if (!product) notFound();
 
-  const others = getAllProducts().filter((p) => p.id !== product.id);
+  // Populairste andere producten eerst, maximaal vier.
+  const others = getBestSellingProducts(getAllProducts().length)
+    .filter((p) => p.id !== product.id)
+    .slice(0, 4);
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
@@ -89,7 +100,7 @@ export default async function ProductPage({
       {others.length > 0 && (
         <section className="mt-20">
           <h2 className="font-wide text-2xl font-bold">Bekijk ook</h2>
-          <ul className="mt-6 grid gap-10 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+          <ul className={`mt-6 grid gap-10 md:gap-6 ${relatedGrid[others.length]}`}>
             {others.map((p) => (
               <li key={p.id}>
                 <ProductTile product={p} />
