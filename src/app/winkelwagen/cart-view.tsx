@@ -218,7 +218,7 @@ export function CartView() {
 
       <aside
         aria-label="Overzicht"
-        className="bg-plate p-6 lg:sticky lg:top-6"
+        className="bg-steel p-6 lg:sticky lg:top-6"
       >
         <h2 className="font-wide text-xl font-bold">Overzicht</h2>
 

@@ -29,7 +29,7 @@
 
 @layer base {
   html {
-    background: var(--steel);
+    background: white;
     color: var(--ink);
   }
 
