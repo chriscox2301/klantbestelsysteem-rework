@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/*
+ * Matrix Inc. — een koele, lichte staalcatalogus met het rood uit het logo
+ * als enige accent. Brede Archivo-koppen sluiten aan op het brede logo.
+ */
+:root {
+  --steel: #e6e9e8;
+  --plate: #f7f8f7;
+  --ink: #141918;
+  --graphite: #55605d;
+  --rule: #c3cac7;
+  --signal: #d2121b;
+  --signal-deep: #a10d14;
+  --go: #1d6b45;
+}
+
+@theme inline {
+  --color-steel: var(--steel);
+  --color-plate: var(--plate);
+  --color-ink: var(--ink);
+  --color-graphite: var(--graphite);
+  --color-rule: var(--rule);
+  --color-signal: var(--signal);
+  --color-signal-deep: var(--signal-deep);
+  --color-go: var(--go);
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--steel);
+    color: var(--ink);
+  }
+
+  body {
+    font-feature-settings: "tnum" 0;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--signal);
+    color: white;
+  }
+}
+
+@utility font-wide {
+  font-variation-settings: "wdth" 125;
+  letter-spacing: -0.01em;
+}
+
+@utility font-narrow {
+  font-variation-settings: "wdth" 88;
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  font-weight: 600;
+  border-radius: 2px;
+  transition:
+    background-color 120ms,
+    color 120ms,
+    border-color 120ms;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+}
+
+@utility btn-primary {
+  background: var(--signal);
+  color: white;
+  &:hover:not(:disabled) {
+    background: var(--signal-deep);
+  }
+}
+
+@utility btn-secondary {
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  &:hover:not(:disabled) {
+    background: var(--ink);
+    color: var(--plate);
+  }
+}
+
+@utility field {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0 0.875rem;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  &::placeholder {
+    color: color-mix(in srgb, var(--graphite) 70%, transparent);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: -1px;
+  }
+  &[aria-invalid="true"] {
+    border-color: var(--signal);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
