@@ -123,37 +123,37 @@ export function CartView() {
           {lines.map(({ product, quantity }) => (
             <li
               key={product.id}
-              className="grid grid-cols-[5rem_1fr] gap-4 border-b border-rule py-5 sm:grid-cols-[6rem_1fr_auto]"
+              className="grid grid-cols-[5rem_1fr] gap-x-4 gap-y-3 border-b border-rule py-5 sm:grid-cols-[7rem_1fr]"
             >
-              <ProductImage product={product} sizes="96px" className="self-start" />
-              <div>
-                <p className="text-sm text-graphite tabular">{partNumber(product.id)}</p>
-                <Link href={`/producten/${product.id}`} className="font-semibold hover:text-signal">
-                  {product.name}
-                </Link>
-                <p className="mt-1 text-sm text-graphite tabular">
-                  {formatPrice(product.price)} per stuk
-                </p>
-              </div>
-              <div className="col-start-2 flex flex-wrap items-center gap-4 sm:col-start-3 sm:flex-col sm:items-end">
-                <p className="font-semibold tabular">
+              <ProductImage product={product} sizes="112px" className="row-span-2 self-start" />
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-sm text-graphite tabular">{partNumber(product.id)}</p>
+                  <Link href={`/producten/${product.id}`} className="font-semibold hover:text-signal">
+                    {product.name}
+                  </Link>
+                  <p className="mt-1 text-sm text-graphite tabular">
+                    {formatPrice(product.price)} per stuk
+                  </p>
+                </div>
+                <p className="shrink-0 font-semibold tabular">
                   {formatPrice(product.price * quantity)}
                 </p>
-                <div className="flex items-center gap-3">
-                  <QuantityStepper
-                    value={quantity}
-                    onChange={(q) => shop.setQuantity(product.id, q)}
-                    label={`Aantal ${product.name}`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => shop.removeFromCart(product.id)}
-                    className="text-sm text-graphite underline underline-offset-4 hover:text-signal"
-                  >
-                    Verwijderen
-                    <span className="sr-only"> {product.name}</span>
-                  </button>
-                </div>
+              </div>
+              <div className="col-start-2 flex items-center justify-between gap-3">
+                <QuantityStepper
+                  value={quantity}
+                  onChange={(q) => shop.setQuantity(product.id, q)}
+                  label={`Aantal ${product.name}`}
+                />
+                <button
+                  type="button"
+                  onClick={() => shop.removeFromCart(product.id)}
+                  className="min-h-11 text-sm text-graphite underline underline-offset-4 hover:text-signal"
+                >
+                  Verwijderen
+                  <span className="sr-only"> {product.name}</span>
+                </button>
               </div>
             </li>
           ))}
@@ -214,6 +214,23 @@ export function CartView() {
             </div>
           </Step>
         </form>
+
+        {/* Op mobiel blijven totaal en de primaire knop in beeld tot het overzicht. */}
+        <div className="sticky bottom-0 z-10 -mx-4 mt-10 flex items-center justify-between gap-4 border-t border-rule bg-white px-4 py-3 shadow-[0_-4px_12px_rgb(0_0_0/0.06)] sm:-mx-6 sm:px-6 lg:hidden">
+          <p className="tabular">
+            <span className="block text-sm text-graphite">Totaal</span>
+            <span className="text-lg font-bold">{formatPrice(totals.total)}</span>
+          </p>
+          {customer ? (
+            <button type="submit" form="checkout" className="btn btn-primary">
+              Bestellen
+            </button>
+          ) : (
+            <Link href="/account" className="btn btn-primary">
+              Inloggen
+            </Link>
+          )}
+        </div>
       </div>
 
       <aside

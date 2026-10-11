@@ -3,23 +3,28 @@
 import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { getCustomerById } from "@/lib/data";
 import { useShop } from "@/lib/store";
 
 const navLink =
-  "flex min-h-11 items-center rounded-sm px-3 text-plate/85 hover:bg-white/10 hover:text-white focus-visible:outline-plate";
+  "flex min-h-11 items-center justify-center px-3 text-plate/85 hover:bg-white/10 hover:text-white focus-visible:outline-plate focus-visible:-outline-offset-2 [&[aria-current]]:text-white [&[aria-current]]:shadow-[inset_0_-2px_0_var(--signal)] md:rounded-sm";
 
 export function SiteHeader() {
   const { cart, customerId } = useShop();
   const count = cart.reduce((n, i) => n + i.quantity, 0);
   const customer = customerId !== null ? getCustomerById(customerId) : null;
+  const pathname = usePathname();
+  // "page" op de pagina zelf, "true" op onderliggende pagina's zoals /producten/1.
+  const current = (href: string) =>
+    pathname === href ? ("page" as const) : pathname.startsWith(href) ? true : undefined;
 
   return (
     <header className="bg-ink text-plate">
-      <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr] items-center gap-x-6 gap-y-3 px-4 py-4 sm:px-6 md:grid-cols-[auto_1fr_auto]">
+      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto] items-center gap-x-6 gap-y-3 px-4 pt-4 sm:px-6 md:grid-cols-[auto_1fr_auto_auto] md:pb-4">
         <Link
           href="/"
-          className="flex min-h-11 items-center focus-visible:outline-plate"
+          className="flex min-h-11 items-center justify-self-start focus-visible:outline-plate"
           aria-label="Matrix Inc. home"
         >
           <Image
@@ -32,38 +37,21 @@ export function SiteHeader() {
           />
         </Link>
 
-        <nav
-          aria-label="Hoofdmenu"
-          className="flex items-center justify-end gap-1 text-sm font-medium md:order-last"
+        <Link
+          href="/winkelwagen"
+          className="btn btn-primary px-3 text-sm focus-visible:outline-plate md:order-3"
         >
-          <Link href="/producten" className={navLink}>
-            Producten
-          </Link>
-          <Link
-            href="/bestellingen"
-            className={`${navLink} hidden sm:flex`}
-          >
-            Bestellingen
-          </Link>
-          <Link href="/account" className={navLink}>
-            {customer ? customer.name : "Inloggen"}
-          </Link>
-          <Link
-            href="/winkelwagen"
-            className="btn btn-primary ml-1 px-3 focus-visible:outline-plate"
-          >
-            <CartIcon />
-            <span className="tabular">{count}</span>
-            <span className="sr-only">
-              {count === 1 ? "product" : "producten"} in winkelwagen
-            </span>
-          </Link>
-        </nav>
+          <CartIcon />
+          <span className="tabular">{count}</span>
+          <span className="sr-only">
+            {count === 1 ? "product" : "producten"} in winkelwagen
+          </span>
+        </Link>
 
         <Form
           action="/producten"
           role="search"
-          className="col-span-2 flex md:col-span-1 md:max-w-md md:justify-self-center md:w-full"
+          className="col-span-2 flex md:order-1 md:col-span-1 md:w-full md:max-w-md md:justify-self-center"
         >
           <label htmlFor="site-search" className="sr-only">
             Zoek in producten
@@ -82,6 +70,22 @@ export function SiteHeader() {
             Zoeken
           </button>
         </Form>
+
+        {/* Op mobiel een eigen rij onder de zoekbalk, zodat alle links passen. */}
+        <nav
+          aria-label="Hoofdmenu"
+          className="col-span-2 -mx-4 grid grid-cols-3 border-t border-white/10 text-sm font-medium sm:-mx-6 md:order-2 md:col-span-1 md:mx-0 md:flex md:gap-1 md:border-0"
+        >
+          <Link href="/producten" className={navLink} aria-current={current("/producten")}>
+            Producten
+          </Link>
+          <Link href="/bestellingen" className={navLink} aria-current={current("/bestellingen")}>
+            Bestellingen
+          </Link>
+          <Link href="/account" className={navLink} aria-current={current("/account")}>
+            {customer ? customer.name : "Inloggen"}
+          </Link>
+        </nav>
       </div>
     </header>
   );
