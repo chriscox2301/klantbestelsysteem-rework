@@ -12,41 +12,49 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="mx-auto grid max-w-6xl gap-10 px-4 pt-12 pb-16 sm:px-6 md:grid-cols-[1.1fr_1fr] md:items-end md:pt-20">
-        <div>
-          <h1 className="font-wide text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] font-extrabold">
-            Uitrusting voor de echte wereld.
-          </h1>
-          <p className="mt-6 max-w-md text-lg text-graphite">
-            Schepen, jack-in chairs en wapentuig voor de bemanningen van Zion.
-            Gratis verzonden, met 30 dagen bedenktijd.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/producten" className="btn btn-primary">
-              Bekijk alle producten
-            </Link>
-            <Link href={`/producten/${featured.id}`} className="btn btn-secondary">
-              Bekijk de {featured.name}
-            </Link>
+      <section className="relative isolate overflow-hidden bg-ink text-plate">
+        <div className="absolute inset-0 -z-10 md:left-auto md:w-[62%]">
+          <Image
+            src={featured.imageUrl}
+            alt=""
+            fill
+            preload
+            sizes="(min-width: 768px) 62vw, 100vw"
+            className="object-cover object-[65%_center]"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-ink/75 md:bg-transparent md:bg-linear-to-r md:from-ink md:via-ink/40 md:via-30% md:to-transparent"
+          />
+        </div>
+
+        <div className="mx-auto max-w-6xl px-4 pt-16 pb-20 sm:px-6 md:pt-28 md:pb-32">
+          <div className="max-w-3xl">
+            <h1 className="font-wide text-[clamp(2.25rem,5vw,3.75rem)] leading-[1.02] font-extrabold text-balance">
+              Uitrusting voor de echte wereld.
+            </h1>
+            <p className="mt-6 max-w-lg text-lg text-plate/85">
+              Schepen, jack-in chairs en wapentuig voor de bemanningen van Zion.
+              Gratis verzonden, met 30 dagen bedenktijd.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/producten" className="btn btn-primary focus-visible:outline-plate">
+                Bekijk alle producten
+              </Link>
+              <Link
+                href={`/producten/${featured.id}`}
+                className="btn border border-plate/70 text-plate hover:bg-plate hover:text-ink focus-visible:outline-plate"
+              >
+                Bekijk de {featured.name}
+              </Link>
+            </div>
           </div>
         </div>
 
-        <figure>
-          <div className="relative aspect-[16/10] overflow-hidden bg-ink">
-            <Image
-              src={featured.imageUrl}
-              alt={featured.name}
-              fill
-              priority
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover"
-            />
-          </div>
-          <figcaption className="mt-3 flex justify-between text-sm text-graphite">
-            <span>{featured.name}, het schip van Morpheus</span>
-            <span className="tabular">{formatPrice(featured.price)}</span>
-          </figcaption>
-        </figure>
+        <p className="absolute inset-x-0 bottom-5 mx-auto hidden max-w-6xl px-6 text-right text-sm text-plate/75 md:block">
+          Op de foto: {featured.name}, het schip van Morpheus ·{" "}
+          <span className="tabular">{formatPrice(featured.price)}</span>
+        </p>
       </section>
 
       <PromoStrip />
