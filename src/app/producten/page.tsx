@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { QuickAddButton } from "@/components/add-to-cart";
 import { ProductImage } from "@/components/product-image";
 import { getAllProducts, searchProducts } from "@/lib/data";
-import { formatPrice, partNumber } from "@/lib/format";
+import { formatPrice } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Producten" };
 
@@ -82,8 +82,7 @@ async function Results({
                 <ProductImage product={product} sizes="160px" />
               </Link>
               <div>
-                <p className="text-sm text-graphite tabular">{partNumber(product.id)}</p>
-                <h2 className="mt-1 text-xl font-semibold">
+                <h2 className="text-xl font-semibold">
                   <Link href={`/producten/${product.id}`} className="hover:text-signal">
                     {product.name}
                   </Link>

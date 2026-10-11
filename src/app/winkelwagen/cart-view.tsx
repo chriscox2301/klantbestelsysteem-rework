@@ -6,7 +6,7 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import { ProductImage } from "@/components/product-image";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { discountCodes, getCustomerById, getProductById } from "@/lib/data";
-import { formatPrice, partNumber } from "@/lib/format";
+import { formatPrice } from "@/lib/format";
 import { orderTotals, shop, useHydrated, useShop } from "@/lib/store";
 import type { DeliveryMoment, PaymentMethod, ShippingAddress } from "@/lib/types";
 
@@ -128,7 +128,6 @@ export function CartView() {
               <ProductImage product={product} sizes="112px" className="row-span-2 self-start" />
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-sm text-graphite tabular">{partNumber(product.id)}</p>
                   <Link href={`/producten/${product.id}`} className="font-semibold hover:text-signal">
                     {product.name}
                   </Link>
@@ -160,7 +159,30 @@ export function CartView() {
         </ul>
 
         <form id="checkout" onSubmit={submit} noValidate className="mt-14 space-y-12">
-          <Step number={1} title="Bezorgadres">
+          {!customer && (
+            <div
+              role="note"
+              className="flex flex-col gap-4 border-l-4 border-signal bg-steel p-5 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div className="flex gap-3">
+                <svg aria-hidden="true" viewBox="0 0 24 24" className="mt-0.5 size-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="4" y="10" width="16" height="11" />
+                  <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                </svg>
+                <div>
+                  <p className="font-semibold">Log in om je bestelling af te ronden</p>
+                  <p className="mt-1 text-sm text-graphite">
+                    Daarna vul je je bezorgadres in. Je winkelwagen blijft bewaard.
+                  </p>
+                </div>
+              </div>
+              <Link href="/account" className="btn btn-primary shrink-0">
+                Inloggen
+              </Link>
+            </div>
+          )}
+
+          <Step number={1} title="Bezorgadres" disabled={!customer}>
             <div className="grid gap-4 sm:grid-cols-6">
               <Field label="Voornaam" error={errors.firstName} name="firstName" className="sm:col-span-3">
                 <input {...field("firstName")} autoComplete="given-name" className="field" />
@@ -286,9 +308,19 @@ export function CartView() {
   );
 }
 
-function Step({ number, title, children }: { number: number; title: string; children: ReactNode }) {
+function Step({
+  number,
+  title,
+  disabled = false,
+  children,
+}: {
+  number: number;
+  title: string;
+  disabled?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <fieldset>
+    <fieldset disabled={disabled} className="disabled:[&_label]:text-graphite">
       <legend className="mb-5 flex items-baseline gap-3">
         <span className="font-wide text-2xl font-extrabold text-signal tabular">{number}</span>
         <span className="font-wide text-2xl font-bold">{title}</span>

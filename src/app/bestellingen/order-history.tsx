@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { OrderLines } from "@/components/order-lines";
 import { getCustomerById } from "@/lib/data";
 import { formatDate, formatPrice, formatTime } from "@/lib/format";
@@ -27,15 +28,20 @@ export function OrderHistory() {
 
   if (!customer) {
     return (
-      <div className="py-16">
-        <h2 className="text-2xl font-semibold">Log in om je bestellingen te zien</h2>
-        <p className="mt-2 text-graphite">
-          Je bestellingen zijn gekoppeld aan je account.
+      <EmptyState title="Log in om je bestellingen te zien">
+        <p>
+          Je bestellingen zijn gekoppeld aan je account. Nog niets besteld?
+          Neem een kijkje in de catalogus.
         </p>
-        <Link href="/account" className="btn btn-primary mt-6">
-          Inloggen
-        </Link>
-      </div>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Link href="/account" className="btn btn-primary">
+            Inloggen
+          </Link>
+          <Link href="/producten" className="btn btn-secondary">
+            Bekijk alle producten
+          </Link>
+        </div>
+      </EmptyState>
     );
   }
 
@@ -43,13 +49,12 @@ export function OrderHistory() {
 
   if (orders.length === 0) {
     return (
-      <div className="py-16">
-        <h2 className="text-2xl font-semibold">{customer.name} heeft nog niets besteld</h2>
-        <p className="mt-2 text-graphite">Je bestellingen verschijnen hier zodra je er een plaatst.</p>
+      <EmptyState title={`${customer.name} heeft nog niets besteld`}>
+        <p>Je bestellingen verschijnen hier zodra je er een plaatst.</p>
         <Link href="/producten" className="btn btn-primary mt-6">
           Bekijk alle producten
         </Link>
-      </div>
+      </EmptyState>
     );
   }
 
@@ -97,5 +102,28 @@ export function OrderHistory() {
         ))}
       </ul>
     </>
+  );
+}
+
+function EmptyState({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="mt-8 flex flex-col items-center border border-dashed border-rule px-6 py-14 text-center">
+      <span className="flex size-14 items-center justify-center rounded-full bg-steel">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          className="size-7"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinejoin="round"
+        >
+          <path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z" />
+          <path d="M3 7.5 12 12l9-4.5M12 12v9" />
+        </svg>
+      </span>
+      <h2 className="mt-5 text-2xl font-semibold text-balance">{title}</h2>
+      <div className="mt-2 max-w-md text-graphite">{children}</div>
+    </div>
   );
 }

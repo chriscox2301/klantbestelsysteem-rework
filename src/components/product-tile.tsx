@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatPrice, partNumber } from "@/lib/format";
+import { formatPrice } from "@/lib/format";
 import type { Product } from "@/lib/types";
 import { ProductImage } from "./product-image";
 
@@ -16,19 +16,15 @@ export function ProductTile({
       href={`/producten/${product.id}`}
       className="group flex flex-col border-t-2 border-ink pt-3"
     >
-      <div className="flex items-baseline justify-between text-sm text-graphite">
-        <span className="tabular">{partNumber(product.id)}</span>
-        {rank !== undefined && (
-          <span className="font-wide text-2xl font-extrabold text-ink tabular">
-            <span className="sr-only">Plaats </span>
-            {rank}
-          </span>
-        )}
-      </div>
+      {rank !== undefined && (
+        <span className="mb-3 self-end font-wide text-2xl font-extrabold tabular">
+          <span className="sr-only">Plaats </span>
+          {rank}
+        </span>
+      )}
       <ProductImage
         product={product}
         sizes="(min-width: 768px) 33vw, 100vw"
-        className="mt-3"
         imageClassName="transition-transform duration-300 group-hover:scale-[1.03]"
       />
       <h3 className="mt-4 text-lg leading-snug font-semibold group-hover:text-signal">

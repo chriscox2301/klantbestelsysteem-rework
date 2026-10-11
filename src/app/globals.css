@@ -114,6 +114,11 @@
   &[aria-invalid="true"] {
     border-color: var(--signal);
   }
+  &:disabled {
+    cursor: not-allowed;
+    background: var(--steel);
+    color: var(--graphite);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
