@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { QuickAddButton } from "@/components/add-to-cart";
+import { ProductImage } from "@/components/product-image";
 import { getAllProducts, searchProducts } from "@/lib/data";
 import { formatPrice, partNumber } from "@/lib/format";
 
@@ -75,17 +75,11 @@ async function Results({
             >
               <Link
                 href={`/producten/${product.id}`}
-                className="relative row-span-2 aspect-square overflow-hidden bg-plate sm:row-span-1"
+                className="row-span-2 self-start sm:row-span-1"
                 tabIndex={-1}
                 aria-hidden="true"
               >
-                <Image
-                  src={product.imageUrl}
-                  alt=""
-                  fill
-                  sizes="160px"
-                  className="object-cover"
-                />
+                <ProductImage product={product} sizes="160px" />
               </Link>
               <div>
                 <p className="text-sm text-graphite tabular">{partNumber(product.id)}</p>

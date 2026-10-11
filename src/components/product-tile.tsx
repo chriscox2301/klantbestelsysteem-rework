@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { formatPrice, partNumber } from "@/lib/format";
 import type { Product } from "@/lib/types";
+import { ProductImage } from "./product-image";
 
 /** Compacte producttegel voor overzichten zoals "Meest verkocht". */
 export function ProductTile({
@@ -25,15 +25,12 @@ export function ProductTile({
           </span>
         )}
       </div>
-      <div className="relative mt-3 aspect-[4/3] overflow-hidden bg-plate">
-        <Image
-          src={product.imageUrl}
-          alt=""
-          fill
-          sizes="(min-width: 768px) 33vw, 100vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-        />
-      </div>
+      <ProductImage
+        product={product}
+        sizes="(min-width: 768px) 33vw, 100vw"
+        className="mt-3"
+        imageClassName="transition-transform duration-300 group-hover:scale-[1.03]"
+      />
       <h3 className="mt-4 text-lg leading-snug font-semibold group-hover:text-signal">
         {product.name}
       </h3>

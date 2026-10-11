@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent, type ReactNode } from "react";
+import { ProductImage } from "@/components/product-image";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { discountCodes, getCustomerById, getProductById } from "@/lib/data";
 import { formatPrice, partNumber } from "@/lib/format";
@@ -125,9 +125,7 @@ export function CartView() {
               key={product.id}
               className="grid grid-cols-[5rem_1fr] gap-4 border-b border-rule py-5 sm:grid-cols-[6rem_1fr_auto]"
             >
-              <div className="relative aspect-square overflow-hidden bg-plate">
-                <Image src={product.imageUrl} alt="" fill sizes="96px" className="object-cover" />
-              </div>
+              <ProductImage product={product} sizes="96px" className="self-start" />
               <div>
                 <p className="text-sm text-graphite tabular">{partNumber(product.id)}</p>
                 <Link href={`/producten/${product.id}`} className="font-semibold hover:text-signal">

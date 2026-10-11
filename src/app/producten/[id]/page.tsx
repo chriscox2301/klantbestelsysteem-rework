@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AddToCartForm } from "@/components/add-to-cart";
+import { ProductImage } from "@/components/product-image";
 import { ProductTile } from "@/components/product-tile";
 import { getAllProducts, getProductById } from "@/lib/data";
 import { formatPrice, partNumber } from "@/lib/format";
@@ -45,16 +45,13 @@ export default async function ProductPage({
       </nav>
 
       <article className="mt-6 grid gap-10 md:grid-cols-[1.2fr_1fr]">
-        <div className="relative aspect-[4/3] overflow-hidden bg-ink">
-          <Image
-            src={product.imageUrl}
-            alt={product.name}
-            fill
-            priority
-            sizes="(min-width: 768px) 55vw, 100vw"
-            className="object-contain"
-          />
-        </div>
+        <ProductImage
+          product={product}
+          alt={product.name}
+          preload
+          sizes="(min-width: 768px) 55vw, 100vw"
+          className="self-start"
+        />
 
         <div className="flex flex-col">
           <p className="text-sm text-graphite tabular">

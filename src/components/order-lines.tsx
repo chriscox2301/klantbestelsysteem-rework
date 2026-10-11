@@ -2,6 +2,7 @@ import { getProductById } from "@/lib/data";
 import { formatPrice } from "@/lib/format";
 import { orderTotals } from "@/lib/store";
 import type { Order } from "@/lib/types";
+import { ProductImage } from "./product-image";
 
 export function OrderLines({ order }: { order: Order }) {
   const totals = orderTotals(order);
@@ -18,14 +19,27 @@ export function OrderLines({ order }: { order: Order }) {
           </tr>
         </thead>
         <tbody>
-          {order.lines.map((line) => (
-            <tr key={line.productId} className="border-b border-rule">
-              <td className="py-3">{getProductById(line.productId)?.name ?? "Onbekend product"}</td>
-              <td className="py-3 text-right">{line.quantity}</td>
-              <td className="py-3 text-right">{formatPrice(line.unitPrice)}</td>
-              <td className="py-3 text-right">{formatPrice(line.unitPrice * line.quantity)}</td>
-            </tr>
-          ))}
+          {order.lines.map((line) => {
+            const product = getProductById(line.productId);
+            const name = product?.name ?? "Onbekend product";
+            return (
+              <tr key={line.productId} className="border-b border-rule">
+                <td className="py-3">
+                  <div className="flex items-center gap-3">
+                    <ProductImage
+                      product={{ name, imageUrl: product?.imageUrl ?? "" }}
+                      sizes="64px"
+                      className="w-16 shrink-0"
+                    />
+                    {name}
+                  </div>
+                </td>
+                <td className="py-3 text-right">{line.quantity}</td>
+                <td className="py-3 text-right">{formatPrice(line.unitPrice)}</td>
+                <td className="py-3 text-right">{formatPrice(line.unitPrice * line.quantity)}</td>
+              </tr>
+            );
+          })}
         </tbody>
         <tfoot>
           {totals.discount > 0 && (
