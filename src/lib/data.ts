@@ -30,6 +30,38 @@ export const products: Product[] = [
     price: 129.99,
     imageUrl: "/img/products/emp-device.png",
   },
+  {
+    id: 4,
+    name: "Hovercraft-motor",
+    description:
+      "Elektromagnetische aandrijfunit voor hovercrafts van de Zion-vloot. Past op schepen van de Nebuchadnezzar-klasse; inclusief montageset en koelcircuit.",
+    price: 3450,
+    imageUrl: "",
+  },
+  {
+    id: 5,
+    name: "Sentinel-detector",
+    description:
+      "Draagbare scanner die de elektromagnetische signatuur van Sentinels tot op twee kilometer afstand oppikt. Met trilalarm en tien uur accuduur.",
+    price: 749.95,
+    imageUrl: "",
+  },
+  {
+    id: 6,
+    name: "Operator-console",
+    description:
+      "Werkstation met vier schermen voor de operator aan boord. Toont de code van de Matrix in realtime en laadt trainingsprogramma's voor ingeplugde bemanningsleden.",
+    price: 2199,
+    imageUrl: "",
+  },
+  {
+    id: 7,
+    name: "Neurale kabel",
+    description:
+      "Afgeschermde datakabel van 3 meter met nekpoortconnector voor de jack-in chair. Vergulde contactpunten zorgen voor een stabiele verbinding.",
+    price: 89.95,
+    imageUrl: "",
+  },
 ];
 
 export const customers: Customer[] = [
@@ -74,6 +106,36 @@ export const seedOrders: Order[] = [
     orderDate: "2021-03-01T21:30:00",
     status: "Geannuleerd",
     lines: [{ productId: 3, quantity: 2, unitPrice: price(3) }],
+  },
+  {
+    id: 5,
+    customerId: 2,
+    orderDate: "2021-03-14T11:20:00",
+    status: "Bezorgd",
+    lines: [
+      { productId: 7, quantity: 8, unitPrice: price(7) },
+      { productId: 6, quantity: 1, unitPrice: price(6) },
+    ],
+  },
+  {
+    id: 6,
+    customerId: 3,
+    orderDate: "2021-04-02T08:45:00",
+    status: "Bezorgd",
+    lines: [
+      { productId: 5, quantity: 4, unitPrice: price(5) },
+      { productId: 7, quantity: 6, unitPrice: price(7) },
+    ],
+  },
+  {
+    id: 7,
+    customerId: 1,
+    orderDate: "2021-04-20T19:10:00",
+    status: "Onderweg",
+    lines: [
+      { productId: 5, quantity: 3, unitPrice: price(5) },
+      { productId: 4, quantity: 1, unitPrice: price(4) },
+    ],
   },
 ];
 
