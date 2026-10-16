@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import type { CSSProperties } from "react";
+import { brand } from "@/brand.config";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -12,20 +12,26 @@ const archivo = Archivo({
 
 export const metadata: Metadata = {
   title: {
-    default: "Matrix Inc.",
-    template: "%s — Matrix Inc.",
+    default: brand.name,
+    template: `%s | ${brand.name}`,
   },
   description: "Schepen, uitrusting en onderdelen voor de echte wereld.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="nl" className={`${archivo.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
-      </body>
+    <html
+      lang="nl"
+      className={`${archivo.variable} h-full antialiased`}
+      style={
+        {
+          "--brand": brand.colors.primary,
+          "--brand-contrast": brand.colors.primaryContrast,
+          "--accent": brand.colors.accent,
+        } as CSSProperties
+      }
+    >
+      <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );
 }

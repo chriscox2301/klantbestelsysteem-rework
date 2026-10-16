@@ -1,9 +1,29 @@
+export type CategorySlug = "schepen" | "jack-in" | "verdediging" | "uitrusting";
+
+export type Category = {
+  slug: CategorySlug;
+  name: string;
+  description: string;
+};
+
 export type Product = {
   id: number;
   name: string;
   description: string;
   price: number;
+  /** Adviesprijs; alleen gezet als het product in de aanbieding is. */
+  oldPrice?: number;
   imageUrl: string;
+  category: CategorySlug;
+  rating?: number;
+  reviewCount?: number;
+  /** 0 = tijdelijk uitverkocht */
+  stock: number;
+  /** Vervangt brand.deliveryPromise, bijv. voor grote producten. */
+  deliveryText?: string;
+  badge?: "deal" | "nieuw" | "bestseller";
+  highlights?: string[];
+  specs?: Record<string, string>;
 };
 
 export type Customer = {
